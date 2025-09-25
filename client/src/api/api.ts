@@ -1,10 +1,28 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
+import toast from "react-hot-toast";
 
-const API = axios.create({ 
-  baseURL: "http://localhost:9000/api/auth",  
-  withCredentials: true, // ✅ important for sending cookies
- });
+const API = axios.create({
+  baseURL: "http://localhost:9000/api/auth",
+  withCredentials: true, // ✅ for cookies/JWT
+});
+
+// ✅ Response interceptor for errors
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const msg =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong. Please try again.";
+
+    // Show toast automatically
+    toast.error(msg);
+
+    // Still reject so caller knows request failed
+    return Promise.reject(error);
+  }
+);
 
 // User type
 export interface User {

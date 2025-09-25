@@ -24,25 +24,6 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const errors: string[] = [];
-
-    if (!form.email.trim()) errors.push("Email is required");
-    if (!form.password.trim()) errors.push("Password is required");
-
-    // Optional: email format validation
-    if (form.email.trim()) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(form.email))
-        errors.push("Enter a valid email address");
-    }
-
-    // If there are errors, show them and stop submission
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      return;
-    }
-
     const loadingToast = toast.loading("Logging in...");
     setIsLoading(true);
 
@@ -53,13 +34,6 @@ const Login = () => {
       toast.success("Login successful!");
     } catch (err: any) {
       console.error(err);
-      if (err.response && err.response.status === 404) {
-        toast.error("User not found");
-      } else if (err.response && err.response.status === 401) {
-        toast.error("Invalid password");
-      } else {
-        toast.error("Login failed");
-      }
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
@@ -74,7 +48,7 @@ const Login = () => {
       >
         <h1 className="text-3xl font-bold text-center mb-2">Welcome Back</h1>
         <p className="text-center text-gray-400 mb-6">
-          Sign in to continue your productivity journey
+          Sign in to continue your journey
         </p>
 
         {/* Email */}
@@ -115,12 +89,14 @@ const Login = () => {
         </div> */}
 
         {/* Submit */}
-        <button
-          type="submit"
-          className="w-full py-3 mb-4 mt-5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg font-bold hover:opacity-90 transition"
-        >
-          {isLoading ? "Logging in..." : "Login"}
-        </button>
+        <div className="flex justify-center mt-5">
+          <button
+            type="submit"
+            className="py-3 px-10 mb-6 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg font-bold hover:opacity-90 transition"
+          >
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
+        </div>
 
         <p className="text-center text-gray-400 text-sm">
           Don't have an account?{" "}

@@ -8,7 +8,7 @@ const generateToken = (id) => {
 
 // Function to send token in cookie
 const sendToken = (res, user) => {
-  const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days
+  const maxAge = 1 * 24 * 60 * 60 * 1000; // 1 days
   res.cookie("token", generateToken(user._id), {
     httpOnly: true, // JS cannot access cookie
     secure: false, // false for localhost
@@ -31,6 +31,33 @@ const register = async (req, res) => {
   const { name, email, password, phone, address } = req.body;
 
   try {
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
+    }
+    if (name.trim().length < 2) {
+      return res
+        .status(400)
+        .json({ message: "Name must be at least 2 characters long" });
+    }
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Please enter a valid email" });
+    }
+
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+    if (password.length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters long" });
+    }
+
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
@@ -49,9 +76,20 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Please enter a valid email" });
+    }
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
     if (user && (await user.matchPassword(password))) {
       sendToken(res, user);

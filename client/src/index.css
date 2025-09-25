@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --gradient-hero: linear-gradient(135deg, hsl(221, 35%, 11%), hsl(240, 30%, 23%), hsl(255, 15%, 5%));
+}
+
+.bg-hero {
+  background: var(--gradient-hero);
+}

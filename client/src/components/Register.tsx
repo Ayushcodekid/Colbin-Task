@@ -27,26 +27,6 @@ const Register = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    const errors: string[] = [];
-
-    if (!form.name.trim()) errors.push("Name is required");
-    if (!form.email.trim()) errors.push("Email is required");
-    if (!form.password.trim()) errors.push("Password is required");
-
-    // Optional: email format validation if email is filled
-    if (form.email.trim()) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(form.email))
-        errors.push("Enter a valid email address");
-    }
-
-    // If there are errors, show them and stop submission
-    if (errors.length > 0) {
-      errors.forEach((err) => toast.error(err));
-      return;
-    }
-
     const loadingToast = toast.loading("Registering...");
     setIsLoading(true);
 
@@ -57,11 +37,6 @@ const Register = () => {
       navigate("/");
     } catch (err: any) {
       console.error(err);
-      if (err.response && err.response.status === 400) {
-        toast.error("User already exists with this email");
-      } else {
-        toast.error("Registration failed");
-      }
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
@@ -76,7 +51,7 @@ const Register = () => {
       >
         <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
         <p className="text-center text-gray-400 mb-6">
-          Sign up to start your productivity journey
+          Sign up to start your journey
         </p>
 
         {/* Name */}
@@ -102,7 +77,10 @@ const Register = () => {
         />
 
         {/* Phone */}
-        <label className="block mb-2 font-medium text-left">Phone</label>
+        <label className="block mb-2 font-medium text-left">
+          Phone{" "}
+          <span className="text-gray-400 text-sm opacity-30">(optional)</span>
+        </label>
         <input
           type="number"
           name="phone"
@@ -118,7 +96,10 @@ const Register = () => {
         />
 
         {/* Address */}
-        <label className="block mb-2 font-medium text-left">Address</label>
+        <label className="block mb-2 font-medium text-left">
+          Address{" "}
+          <span className="text-gray-400 text-sm opacity-30">(optional)</span>
+        </label>
         <input
           type="text"
           name="address"
@@ -149,12 +130,14 @@ const Register = () => {
         </div>
 
         {/* Submit */}
-        <button
-          type="submit"
-          className="w-full py-3 mb-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg font-bold hover:opacity-90 transition"
-        >
-          {isLoading ? "Registering..." : "Register"}
-        </button>
+        <div className="flex justify-center mt-5">
+          <button
+            type="submit"
+            className="px-10 py-3 mb-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg font-bold hover:opacity-90 transition"
+          >
+            {isLoading ? "Registering..." : "Register"}
+          </button>
+        </div>
 
         <p className="text-center text-gray-400 text-sm">
           Already have an account?{" "}

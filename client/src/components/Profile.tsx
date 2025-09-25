@@ -31,7 +31,7 @@ const Profile = () => {
   if (!profile) return <div className="text-center mt-10">No profile data</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-hero">
       <Header />
       <div className="max-w-4xl mx-auto p-6">
 
@@ -43,7 +43,7 @@ const Profile = () => {
           <div className="flex flex-col lg:flex-col gap-8">
             {/* Left side - Avatar and basic info */}
             <div className="flex flex-row items-start">
-              <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center text-white text-2xl font-medium mb-4">
+              <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center text-white text-5xl font-medium mb-4">
                 {profile.name.charAt(0)}
               </div>
               <div className="flex flex-col ml-6 gap-3 mt-3">
